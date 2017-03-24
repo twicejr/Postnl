@@ -16,6 +16,26 @@ Install the latest version with
 composer require dividebv/postnl
 ```
 
+# Implementation Status
+
+This library is not complete. This table lists which services are implemented
+and which aren't. The list of existing services is taken from
+[PostNL's developer center](https://developer.postnl.nl/).
+
+| Service                   | Implemented | Version |
+|---------------------------|:-----------:|:-------:|
+| Adrescheck Nationaal      |      ✗      |   N/A   |
+| Geo Adrescheck Nationaal  |      ✗      |   N/A   |
+| Adrescheck Internationaal |      ✗      |   N/A   |
+| IBANcheck Nationaal       |      ✗      |   N/A   |
+| Barcode Webservice        |      ✓      |   1_1   |
+| Labelling Webservice      |      ✓      |   2_0   |
+| Confirming Webservice     |      ✓      |   1_9   |
+| Deliverydate Webservice   |      ✓      |   2_1   |
+| Timeframe Webservice      |      ✓      |   2_0   |
+| Location Webservice       |      ✓      |   2_1   |
+| Shippingstatus Webservice |      ✓      |   1_6   |
+
 # Example
 
 ```php
@@ -86,12 +106,9 @@ $shipment = ComplexTypes\Shipment::create()
 // Generate label and confirm shipment.
 $result = $client->generateLabel($shipment);
 
-// Save the label PDFs locally.
-$i = 0;
-foreach ($result->getLabels() as $label) {
-    $i++;
-    $file = new \SplFileObject("label{$i}.pdf", 'w');
-    $file->fwrite($label->getContent());
-}
+// Save the label PDF locally.
+$label = $result->getLabels()[0];
+$file = new \SplFileObject("label.pdf", 'w');
+$file->fwrite($label->getContent());
 
 ```
